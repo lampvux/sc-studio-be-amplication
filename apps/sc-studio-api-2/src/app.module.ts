@@ -2,7 +2,6 @@ import { Module, Scope } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { MorganInterceptor, MorganModule } from "nest-morgan";
 import { UserModule } from "./user/user.module";
-import { MembershipModule } from "./membership/membership.module";
 import { UserSpentModule } from "./userSpent/userSpent.module";
 import { UserRewardModule } from "./userReward/userReward.module";
 import { SmartContractModule } from "./smartContract/smartContract.module";
@@ -24,7 +23,6 @@ import { AuthModule } from "./auth/auth.module";
     ACLModule,
     AuthModule,
     UserModule,
-    MembershipModule,
     UserSpentModule,
     UserRewardModule,
     SmartContractModule,

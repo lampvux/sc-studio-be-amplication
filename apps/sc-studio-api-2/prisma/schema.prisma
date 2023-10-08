@@ -21,19 +21,6 @@ model User {
   userSpents     UserSpent[]
 }
 
-model Membership {
-  chatLimitation Int?
-  createdAt      DateTime @default(now())
-  description    String?
-  expiredTime    String?
-  expiredUnit    String?
-  id             String   @id @default(cuid())
-  membershipType String
-  name           String?
-  price          Float
-  updatedAt      DateTime @updatedAt
-}
-
 model UserSpent {
   amount    Decimal?
   createdAt DateTime @default(now())
