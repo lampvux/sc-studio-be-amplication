@@ -9,17 +9,32 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-import { ObjectType, Field } from "@nestjs/graphql";
+import { ObjectType, Field, Float } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString, IsOptional, ValidateNested } from "class-validator";
+import {
+  IsNumber,
+  IsOptional,
+  IsDate,
+  IsString,
+  ValidateNested,
+} from "class-validator";
+import { Decimal } from "decimal.js";
 import { Type } from "class-transformer";
-import { IsJSONValue } from "@app/custom-validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { JsonValue } from "type-fest";
 import { Server } from "../../server/base/Server";
 
 @ObjectType()
-class User {
+class ServerCost {
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsNumber()
+  @IsOptional()
+  @Field(() => Float, {
+    nullable: true,
+  })
+  cost!: Decimal | null;
+
   @ApiProperty({
     required: true,
   })
@@ -30,14 +45,14 @@ class User {
 
   @ApiProperty({
     required: false,
-    type: String,
   })
-  @IsString()
+  @IsDate()
+  @Type(() => Date)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => Date, {
     nullable: true,
   })
-  firstName!: string | null;
+  endTime!: Date | null;
 
   @ApiProperty({
     required: true,
@@ -49,6 +64,26 @@ class User {
 
   @ApiProperty({
     required: false,
+    type: () => Server,
+  })
+  @ValidateNested()
+  @Type(() => Server)
+  @IsOptional()
+  serverId?: Server | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  startTime!: Date | null;
+
+  @ApiProperty({
+    required: false,
     type: String,
   })
   @IsString()
@@ -56,23 +91,7 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
-  lastName!: string | null;
-
-  @ApiProperty({
-    required: true,
-  })
-  @IsJSONValue()
-  @Field(() => GraphQLJSON)
-  roles!: JsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => [Server],
-  })
-  @ValidateNested()
-  @Type(() => Server)
-  @IsOptional()
-  servers?: Array<Server>;
+  unit!: string | null;
 
   @ApiProperty({
     required: true,
@@ -81,14 +100,6 @@ class User {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
-
-  @ApiProperty({
-    required: true,
-    type: String,
-  })
-  @IsString()
-  @Field(() => String)
-  username!: string;
 }
 
-export { User as User };
+export { ServerCost as ServerCost };

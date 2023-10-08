@@ -27,6 +27,9 @@ import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserUpdateInput } from "./UserUpdateInput";
 import { User } from "./User";
+import { ServerFindManyArgs } from "../../server/base/ServerFindManyArgs";
+import { Server } from "../../server/base/Server";
+import { ServerWhereUniqueInput } from "../../server/base/ServerWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -199,5 +202,104 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/servers")
+  @ApiNestedQuery(ServerFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Server",
+    action: "read",
+    possession: "any",
+  })
+  async findManyServers(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Server[]> {
+    const query = plainToClass(ServerFindManyArgs, request.query);
+    const results = await this.service.findServers(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        deployedAt: true,
+        description: true,
+        id: true,
+        name: true,
+        status: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/servers")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectServers(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ServerWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      servers: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/servers")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateServers(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ServerWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      servers: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/servers")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectServers(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ServerWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      servers: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

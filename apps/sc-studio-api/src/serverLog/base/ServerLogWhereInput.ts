@@ -11,25 +11,14 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
-import { StringFilter } from "../../util/StringFilter";
-import { ServerListRelationFilter } from "../../server/base/ServerListRelationFilter";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { ServerWhereUniqueInput } from "../../server/base/ServerWhereUniqueInput";
 
 @InputType()
-class UserWhereInput {
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  firstName?: StringNullableFilter;
-
+class ServerLogWhereInput {
   @ApiProperty({
     required: false,
     type: StringFilter,
@@ -50,30 +39,19 @@ class UserWhereInput {
   @Field(() => StringNullableFilter, {
     nullable: true,
   })
-  lastName?: StringNullableFilter;
+  log?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
-    type: () => ServerListRelationFilter,
+    type: () => ServerWhereUniqueInput,
   })
   @ValidateNested()
-  @Type(() => ServerListRelationFilter)
+  @Type(() => ServerWhereUniqueInput)
   @IsOptional()
-  @Field(() => ServerListRelationFilter, {
+  @Field(() => ServerWhereUniqueInput, {
     nullable: true,
   })
-  servers?: ServerListRelationFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringFilter,
-  })
-  @Type(() => StringFilter)
-  @IsOptional()
-  @Field(() => StringFilter, {
-    nullable: true,
-  })
-  username?: StringFilter;
+  serverId?: ServerWhereUniqueInput;
 }
 
-export { UserWhereInput as UserWhereInput };
+export { ServerLogWhereInput as ServerLogWhereInput };

@@ -11,15 +11,21 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString, IsOptional, ValidateNested } from "class-validator";
+import {
+  IsDate,
+  IsString,
+  IsOptional,
+  ValidateNested,
+  IsEnum,
+} from "class-validator";
 import { Type } from "class-transformer";
-import { IsJSONValue } from "@app/custom-validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { JsonValue } from "type-fest";
-import { Server } from "../../server/base/Server";
+import { ServerCost } from "../../serverCost/base/ServerCost";
+import { ServerLog } from "../../serverLog/base/ServerLog";
+import { EnumServerStatus } from "./EnumServerStatus";
+import { User } from "../../user/base/User";
 
 @ObjectType()
-class User {
+class Server {
   @ApiProperty({
     required: true,
   })
@@ -37,7 +43,18 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
-  firstName!: string | null;
+  deployedAt!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  description!: string | null;
 
   @ApiProperty({
     required: true,
@@ -56,23 +73,36 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
-  lastName!: string | null;
-
-  @ApiProperty({
-    required: true,
-  })
-  @IsJSONValue()
-  @Field(() => GraphQLJSON)
-  roles!: JsonValue;
+  name!: string | null;
 
   @ApiProperty({
     required: false,
-    type: () => [Server],
+    type: () => [ServerCost],
   })
   @ValidateNested()
-  @Type(() => Server)
+  @Type(() => ServerCost)
   @IsOptional()
-  servers?: Array<Server>;
+  serverCosts?: Array<ServerCost>;
+
+  @ApiProperty({
+    required: false,
+    type: () => [ServerLog],
+  })
+  @ValidateNested()
+  @Type(() => ServerLog)
+  @IsOptional()
+  serverLogs?: Array<ServerLog>;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumServerStatus,
+  })
+  @IsEnum(EnumServerStatus)
+  @IsOptional()
+  @Field(() => EnumServerStatus, {
+    nullable: true,
+  })
+  status?: "Option1" | null;
 
   @ApiProperty({
     required: true,
@@ -83,12 +113,13 @@ class User {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: true,
-    type: String,
+    required: false,
+    type: () => [User],
   })
-  @IsString()
-  @Field(() => String)
-  username!: string;
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  userId?: Array<User>;
 }
 
-export { User as User };
+export { Server as Server };

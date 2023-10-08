@@ -14,6 +14,45 @@ model User {
   lastName  String?
   password  String
   roles     Json
+  servers   Server[]
   updatedAt DateTime @updatedAt
   username  String   @unique
+}
+
+model Server {
+  createdAt   DateTime          @default(now())
+  deployedAt  String?
+  description String?
+  id          String            @id @default(cuid())
+  name        String?
+  serverCosts ServerCost[]
+  serverLogs  ServerLog[]
+  status      EnumServerStatus?
+  updatedAt   DateTime          @updatedAt
+  userId      User[]
+}
+
+model ServerLog {
+  createdAt   DateTime @default(now())
+  id          String   @id @default(cuid())
+  log         String?
+  serverId    Server?  @relation(fields: [server_logs], references: [id])
+  server_logs String?
+  updatedAt   DateTime @updatedAt
+}
+
+model ServerCost {
+  cost        Decimal?
+  createdAt   DateTime  @default(now())
+  endTime     DateTime?
+  id          String    @id @default(cuid())
+  serverId    Server?   @relation(fields: [server_cost], references: [id])
+  server_cost String?
+  startTime   DateTime?
+  unit        String?
+  updatedAt   DateTime  @updatedAt
+}
+
+enum EnumServerStatus {
+  Option1
 }
