@@ -11,9 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, ValidateNested, IsEnum } from "class-validator";
-import { ServerCostUpdateManyWithoutServersInput } from "./ServerCostUpdateManyWithoutServersInput";
+import {
+  IsDate,
+  IsOptional,
+  IsString,
+  ValidateNested,
+  IsEnum,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { ServerCostUpdateManyWithoutServersInput } from "./ServerCostUpdateManyWithoutServersInput";
 import { ServerLogUpdateManyWithoutServersInput } from "./ServerLogUpdateManyWithoutServersInput";
 import { EnumServerStatus } from "./EnumServerStatus";
 import { UserUpdateManyWithoutServersInput } from "./UserUpdateManyWithoutServersInput";
@@ -22,14 +28,14 @@ import { UserUpdateManyWithoutServersInput } from "./UserUpdateManyWithoutServer
 class ServerUpdateInput {
   @ApiProperty({
     required: false,
-    type: String,
   })
-  @IsString()
+  @IsDate()
+  @Type(() => Date)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => Date, {
     nullable: true,
   })
-  deployedAt?: string | null;
+  deployedAt?: Date | null;
 
   @ApiProperty({
     required: false,
@@ -51,7 +57,7 @@ class ServerUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
-  name?: string | null;
+  name?: string;
 
   @ApiProperty({
     required: false,
@@ -86,7 +92,7 @@ class ServerUpdateInput {
   @Field(() => EnumServerStatus, {
     nullable: true,
   })
-  status?: "Option1" | null;
+  status?: "WorkInProgress" | "Deployed" | "Running" | "Stopped";
 
   @ApiProperty({
     required: false,

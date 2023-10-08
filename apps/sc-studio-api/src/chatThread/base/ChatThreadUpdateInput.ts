@@ -12,10 +12,11 @@ https://docs.amplication.com/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { ChatMessageWhereUniqueInput } from "../../chatMessage/base/ChatMessageWhereUniqueInput";
-import { ValidateNested, IsOptional, IsString, IsDate } from "class-validator";
+import { ValidateNested, IsOptional, IsEnum, IsDate } from "class-validator";
 import { Type } from "class-transformer";
-import { RateWhereUniqueInput } from "../../rate/base/RateWhereUniqueInput";
+import { EnumChatThreadChatType } from "./EnumChatThreadChatType";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { RateWhereUniqueInput } from "../../rate/base/RateWhereUniqueInput";
 
 @InputType()
 class ChatThreadUpdateInput {
@@ -33,14 +34,14 @@ class ChatThreadUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: String,
+    enum: EnumChatThreadChatType,
   })
-  @IsString()
+  @IsEnum(EnumChatThreadChatType)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => EnumChatThreadChatType, {
     nullable: true,
   })
-  chatType?: string | null;
+  chatType?: "expert" | "AI";
 
   @ApiProperty({
     required: false,
@@ -55,14 +56,15 @@ class ChatThreadUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: String,
+    type: () => UserWhereUniqueInput,
   })
-  @IsString()
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  expertId?: string | null;
+  expertId?: UserWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,
@@ -86,7 +88,7 @@ class ChatThreadUpdateInput {
   @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  userId?: UserWhereUniqueInput | null;
+  userId?: UserWhereUniqueInput;
 }
 
 export { ChatThreadUpdateInput as ChatThreadUpdateInput };

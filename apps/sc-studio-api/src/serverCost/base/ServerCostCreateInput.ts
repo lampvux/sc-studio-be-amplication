@@ -47,16 +47,13 @@ class ServerCostCreateInput {
   endTime?: Date | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => ServerWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => ServerWhereUniqueInput)
-  @IsOptional()
-  @Field(() => ServerWhereUniqueInput, {
-    nullable: true,
-  })
-  serverId?: ServerWhereUniqueInput | null;
+  @Field(() => ServerWhereUniqueInput)
+  serverId!: ServerWhereUniqueInput;
 
   @ApiProperty({
     required: false,

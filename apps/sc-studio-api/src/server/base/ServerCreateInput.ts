@@ -11,9 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, ValidateNested, IsEnum } from "class-validator";
-import { ServerCostCreateNestedManyWithoutServersInput } from "./ServerCostCreateNestedManyWithoutServersInput";
+import {
+  IsDate,
+  IsOptional,
+  IsString,
+  ValidateNested,
+  IsEnum,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { ServerCostCreateNestedManyWithoutServersInput } from "./ServerCostCreateNestedManyWithoutServersInput";
 import { ServerLogCreateNestedManyWithoutServersInput } from "./ServerLogCreateNestedManyWithoutServersInput";
 import { EnumServerStatus } from "./EnumServerStatus";
 import { UserCreateNestedManyWithoutServersInput } from "./UserCreateNestedManyWithoutServersInput";
@@ -22,14 +28,14 @@ import { UserCreateNestedManyWithoutServersInput } from "./UserCreateNestedManyW
 class ServerCreateInput {
   @ApiProperty({
     required: false,
-    type: String,
   })
-  @IsString()
+  @IsDate()
+  @Type(() => Date)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => Date, {
     nullable: true,
   })
-  deployedAt?: string | null;
+  deployedAt?: Date | null;
 
   @ApiProperty({
     required: false,
@@ -43,15 +49,12 @@ class ServerCreateInput {
   description?: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  name?: string | null;
+  @Field(() => String)
+  name!: string;
 
   @ApiProperty({
     required: false,
@@ -78,15 +81,12 @@ class ServerCreateInput {
   serverLogs?: ServerLogCreateNestedManyWithoutServersInput;
 
   @ApiProperty({
-    required: false,
+    required: true,
     enum: EnumServerStatus,
   })
   @IsEnum(EnumServerStatus)
-  @IsOptional()
-  @Field(() => EnumServerStatus, {
-    nullable: true,
-  })
-  status?: "Option1" | null;
+  @Field(() => EnumServerStatus)
+  status!: "WorkInProgress" | "Deployed" | "Running" | "Stopped";
 
   @ApiProperty({
     required: false,

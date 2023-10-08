@@ -435,19 +435,26 @@ export class ServerControllerBase {
     const results = await this.service.findUserId(params.id, {
       ...query,
       select: {
-        chatThreads: {
-          select: {
-            id: true,
-          },
-        },
-
+        billingInformation: true,
+        code_2Fa: true,
         createdAt: true,
+        email: true,
+        enabled_2Fa: true,
+        expiredAt_2Fa: true,
         firstName: true,
+        googleUid: true,
         id: true,
         lastName: true,
+        loggedInAt: true,
+        publicWalletAddress: true,
         roles: true,
+        status: true,
+        tokenExpirationAt: true,
+        type_2Fa: true,
         updatedAt: true,
         username: true,
+        userToken: true,
+        verifiedAt: true,
       },
     });
     if (results === null) {

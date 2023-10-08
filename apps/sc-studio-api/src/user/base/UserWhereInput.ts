@@ -11,16 +11,30 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ChatMessageListRelationFilter } from "../../chatMessage/base/ChatMessageListRelationFilter";
-import { ValidateNested, IsOptional } from "class-validator";
-import { Type } from "class-transformer";
-import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { Type } from "class-transformer";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { ChatMessageListRelationFilter } from "../../chatMessage/base/ChatMessageListRelationFilter";
+import { ChatThreadListRelationFilter } from "../../chatThread/base/ChatThreadListRelationFilter";
+import { BooleanNullableFilter } from "../../util/BooleanNullableFilter";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
 import { ServerListRelationFilter } from "../../server/base/ServerListRelationFilter";
+import { EnumUserStatus } from "./EnumUserStatus";
 
 @InputType()
 class UserWhereInput {
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  billingInformation?: StringNullableFilter;
+
   @ApiProperty({
     required: false,
     type: () => ChatMessageListRelationFilter,
@@ -35,15 +49,71 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
-    type: () => ChatThreadWhereUniqueInput,
+    type: () => ChatThreadListRelationFilter,
   })
   @ValidateNested()
-  @Type(() => ChatThreadWhereUniqueInput)
+  @Type(() => ChatThreadListRelationFilter)
   @IsOptional()
-  @Field(() => ChatThreadWhereUniqueInput, {
+  @Field(() => ChatThreadListRelationFilter, {
     nullable: true,
   })
-  chatThreads?: ChatThreadWhereUniqueInput;
+  chatThreads?: ChatThreadListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  code_2Fa?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  email?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: BooleanNullableFilter,
+  })
+  @Type(() => BooleanNullableFilter)
+  @IsOptional()
+  @Field(() => BooleanNullableFilter, {
+    nullable: true,
+  })
+  enabled_2Fa?: BooleanNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => ChatThreadListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => ChatThreadListRelationFilter)
+  @IsOptional()
+  @Field(() => ChatThreadListRelationFilter, {
+    nullable: true,
+  })
+  expertChatThread?: ChatThreadListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  expiredAt_2Fa?: DateTimeNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -55,6 +125,17 @@ class UserWhereInput {
     nullable: true,
   })
   firstName?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  googleUid?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -80,6 +161,28 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  loggedInAt?: DateTimeNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  publicWalletAddress?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
     type: () => ServerListRelationFilter,
   })
   @ValidateNested()
@@ -92,6 +195,39 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
+    enum: EnumUserStatus,
+  })
+  @IsEnum(EnumUserStatus)
+  @IsOptional()
+  @Field(() => EnumUserStatus, {
+    nullable: true,
+  })
+  status?: "Option1";
+
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  tokenExpirationAt?: DateTimeNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  type_2Fa?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
     type: StringFilter,
   })
   @Type(() => StringFilter)
@@ -100,6 +236,28 @@ class UserWhereInput {
     nullable: true,
   })
   username?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  userToken?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  verifiedAt?: DateTimeNullableFilter;
 }
 
 export { UserWhereInput as UserWhereInput };

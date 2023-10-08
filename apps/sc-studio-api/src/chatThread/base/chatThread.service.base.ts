@@ -10,7 +10,7 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, ChatThread, ChatMessage, Rate, User } from "@prisma/client";
+import { Prisma, ChatThread, ChatMessage, User, Rate } from "@prisma/client";
 
 export class ChatThreadServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -53,6 +53,14 @@ export class ChatThreadServiceBase {
         where: { id: parentId },
       })
       .chatMessages();
+  }
+
+  async getExpertId(parentId: string): Promise<User | null> {
+    return this.prisma.chatThread
+      .findUnique({
+        where: { id: parentId },
+      })
+      .expertId();
   }
 
   async getRates(parentId: string): Promise<Rate | null> {

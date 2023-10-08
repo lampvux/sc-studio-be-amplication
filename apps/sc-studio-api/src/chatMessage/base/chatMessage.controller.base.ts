@@ -53,17 +53,13 @@ export class ChatMessageControllerBase {
       data: {
         ...data,
 
-        thread: data.thread
-          ? {
-              connect: data.thread,
-            }
-          : undefined,
+        thread: {
+          connect: data.thread,
+        },
 
-        user: data.user
-          ? {
-              connect: data.user,
-            }
-          : undefined,
+        user: {
+          connect: data.user,
+        },
       },
       select: {
         createdAt: true,
@@ -198,17 +194,13 @@ export class ChatMessageControllerBase {
         data: {
           ...data,
 
-          thread: data.thread
-            ? {
-                connect: data.thread,
-              }
-            : undefined,
+          thread: {
+            connect: data.thread,
+          },
 
-          user: data.user
-            ? {
-                connect: data.user,
-              }
-            : undefined,
+          user: {
+            connect: data.user,
+          },
         },
         select: {
           createdAt: true,

@@ -30,6 +30,9 @@ import { User } from "./User";
 import { ChatMessageFindManyArgs } from "../../chatMessage/base/ChatMessageFindManyArgs";
 import { ChatMessage } from "../../chatMessage/base/ChatMessage";
 import { ChatMessageWhereUniqueInput } from "../../chatMessage/base/ChatMessageWhereUniqueInput";
+import { ChatThreadFindManyArgs } from "../../chatThread/base/ChatThreadFindManyArgs";
+import { ChatThread } from "../../chatThread/base/ChatThread";
+import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
 import { ServerFindManyArgs } from "../../server/base/ServerFindManyArgs";
 import { Server } from "../../server/base/Server";
 import { ServerWhereUniqueInput } from "../../server/base/ServerWhereUniqueInput";
@@ -54,29 +57,28 @@ export class UserControllerBase {
   })
   async create(@common.Body() data: UserCreateInput): Promise<User> {
     return await this.service.create({
-      data: {
-        ...data,
-
-        chatThreads: data.chatThreads
-          ? {
-              connect: data.chatThreads,
-            }
-          : undefined,
-      },
+      data: data,
       select: {
-        chatThreads: {
-          select: {
-            id: true,
-          },
-        },
-
+        billingInformation: true,
+        code_2Fa: true,
         createdAt: true,
+        email: true,
+        enabled_2Fa: true,
+        expiredAt_2Fa: true,
         firstName: true,
+        googleUid: true,
         id: true,
         lastName: true,
+        loggedInAt: true,
+        publicWalletAddress: true,
         roles: true,
+        status: true,
+        tokenExpirationAt: true,
+        type_2Fa: true,
         updatedAt: true,
         username: true,
+        userToken: true,
+        verifiedAt: true,
       },
     });
   }
@@ -98,19 +100,26 @@ export class UserControllerBase {
     return this.service.findMany({
       ...args,
       select: {
-        chatThreads: {
-          select: {
-            id: true,
-          },
-        },
-
+        billingInformation: true,
+        code_2Fa: true,
         createdAt: true,
+        email: true,
+        enabled_2Fa: true,
+        expiredAt_2Fa: true,
         firstName: true,
+        googleUid: true,
         id: true,
         lastName: true,
+        loggedInAt: true,
+        publicWalletAddress: true,
         roles: true,
+        status: true,
+        tokenExpirationAt: true,
+        type_2Fa: true,
         updatedAt: true,
         username: true,
+        userToken: true,
+        verifiedAt: true,
       },
     });
   }
@@ -133,19 +142,26 @@ export class UserControllerBase {
     const result = await this.service.findOne({
       where: params,
       select: {
-        chatThreads: {
-          select: {
-            id: true,
-          },
-        },
-
+        billingInformation: true,
+        code_2Fa: true,
         createdAt: true,
+        email: true,
+        enabled_2Fa: true,
+        expiredAt_2Fa: true,
         firstName: true,
+        googleUid: true,
         id: true,
         lastName: true,
+        loggedInAt: true,
+        publicWalletAddress: true,
         roles: true,
+        status: true,
+        tokenExpirationAt: true,
+        type_2Fa: true,
         updatedAt: true,
         username: true,
+        userToken: true,
+        verifiedAt: true,
       },
     });
     if (result === null) {
@@ -175,29 +191,28 @@ export class UserControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: {
-          ...data,
-
-          chatThreads: data.chatThreads
-            ? {
-                connect: data.chatThreads,
-              }
-            : undefined,
-        },
+        data: data,
         select: {
-          chatThreads: {
-            select: {
-              id: true,
-            },
-          },
-
+          billingInformation: true,
+          code_2Fa: true,
           createdAt: true,
+          email: true,
+          enabled_2Fa: true,
+          expiredAt_2Fa: true,
           firstName: true,
+          googleUid: true,
           id: true,
           lastName: true,
+          loggedInAt: true,
+          publicWalletAddress: true,
           roles: true,
+          status: true,
+          tokenExpirationAt: true,
+          type_2Fa: true,
           updatedAt: true,
           username: true,
+          userToken: true,
+          verifiedAt: true,
         },
       });
     } catch (error) {
@@ -228,19 +243,26 @@ export class UserControllerBase {
       return await this.service.delete({
         where: params,
         select: {
-          chatThreads: {
-            select: {
-              id: true,
-            },
-          },
-
+          billingInformation: true,
+          code_2Fa: true,
           createdAt: true,
+          email: true,
+          enabled_2Fa: true,
+          expiredAt_2Fa: true,
           firstName: true,
+          googleUid: true,
           id: true,
           lastName: true,
+          loggedInAt: true,
+          publicWalletAddress: true,
           roles: true,
+          status: true,
+          tokenExpirationAt: true,
+          type_2Fa: true,
           updatedAt: true,
           username: true,
+          userToken: true,
+          verifiedAt: true,
         },
       });
     } catch (error) {
@@ -354,6 +376,252 @@ export class UserControllerBase {
   ): Promise<void> {
     const data = {
       chatMessages: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/chatThreads")
+  @ApiNestedQuery(ChatThreadFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "ChatThread",
+    action: "read",
+    possession: "any",
+  })
+  async findManyChatThreads(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<ChatThread[]> {
+    const query = plainToClass(ChatThreadFindManyArgs, request.query);
+    const results = await this.service.findChatThreads(params.id, {
+      ...query,
+      select: {
+        chatMessages: {
+          select: {
+            id: true,
+          },
+        },
+
+        chatType: true,
+        closedAt: true,
+        createdAt: true,
+
+        expertId: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+
+        rates: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+
+        userId: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/chatThreads")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectChatThreads(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatThreadWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      chatThreads: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/chatThreads")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateChatThreads(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatThreadWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      chatThreads: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/chatThreads")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectChatThreads(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatThreadWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      chatThreads: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/expertChatThread")
+  @ApiNestedQuery(ChatThreadFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "ChatThread",
+    action: "read",
+    possession: "any",
+  })
+  async findManyExpertChatThread(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<ChatThread[]> {
+    const query = plainToClass(ChatThreadFindManyArgs, request.query);
+    const results = await this.service.findExpertChatThread(params.id, {
+      ...query,
+      select: {
+        chatMessages: {
+          select: {
+            id: true,
+          },
+        },
+
+        chatType: true,
+        closedAt: true,
+        createdAt: true,
+
+        expertId: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+
+        rates: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+
+        userId: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/expertChatThread")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectExpertChatThread(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatThreadWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      expertChatThread: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/expertChatThread")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateExpertChatThread(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatThreadWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      expertChatThread: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/expertChatThread")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectExpertChatThread(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatThreadWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      expertChatThread: {
         disconnect: body,
       },
     };

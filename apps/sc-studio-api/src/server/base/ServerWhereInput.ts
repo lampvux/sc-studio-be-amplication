@@ -11,9 +11,10 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
 import { ServerCostListRelationFilter } from "../../serverCost/base/ServerCostListRelationFilter";
 import { ServerLogListRelationFilter } from "../../serverLog/base/ServerLogListRelationFilter";
@@ -24,14 +25,14 @@ import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
 class ServerWhereInput {
   @ApiProperty({
     required: false,
-    type: StringNullableFilter,
+    type: DateTimeNullableFilter,
   })
-  @Type(() => StringNullableFilter)
+  @Type(() => DateTimeNullableFilter)
   @IsOptional()
-  @Field(() => StringNullableFilter, {
+  @Field(() => DateTimeNullableFilter, {
     nullable: true,
   })
-  deployedAt?: StringNullableFilter;
+  deployedAt?: DateTimeNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -57,14 +58,14 @@ class ServerWhereInput {
 
   @ApiProperty({
     required: false,
-    type: StringNullableFilter,
+    type: StringFilter,
   })
-  @Type(() => StringNullableFilter)
+  @Type(() => StringFilter)
   @IsOptional()
-  @Field(() => StringNullableFilter, {
+  @Field(() => StringFilter, {
     nullable: true,
   })
-  name?: StringNullableFilter;
+  name?: StringFilter;
 
   @ApiProperty({
     required: false,
@@ -99,7 +100,7 @@ class ServerWhereInput {
   @Field(() => EnumServerStatus, {
     nullable: true,
   })
-  status?: "Option1";
+  status?: "WorkInProgress" | "Deployed" | "Running" | "Stopped";
 
   @ApiProperty({
     required: false,

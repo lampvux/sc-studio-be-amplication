@@ -53,11 +53,9 @@ export class ServerCostControllerBase {
       data: {
         ...data,
 
-        serverId: data.serverId
-          ? {
-              connect: data.serverId,
-            }
-          : undefined,
+        serverId: {
+          connect: data.serverId,
+        },
       },
       select: {
         cost: true,
@@ -177,11 +175,9 @@ export class ServerCostControllerBase {
         data: {
           ...data,
 
-          serverId: data.serverId
-            ? {
-                connect: data.serverId,
-              }
-            : undefined,
+          serverId: {
+            connect: data.serverId,
+          },
         },
         select: {
           cost: true,

@@ -11,13 +11,11 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { registerEnumType } from "@nestjs/graphql";
 
-export enum EnumServerStatus {
-  WorkInProgress = "WorkInProgress",
-  Deployed = "Deployed",
-  Running = "Running",
-  Stopped = "Stopped",
+export enum EnumChatThreadChatType {
+  Expert = "expert",
+  Ai = "AI",
 }
 
-registerEnumType(EnumServerStatus, {
-  name: "EnumServerStatus",
+registerEnumType(EnumChatThreadChatType, {
+  name: "EnumChatThreadChatType",
 });

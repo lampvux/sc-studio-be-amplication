@@ -12,13 +12,13 @@ https://docs.amplication.com/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { ChatMessageWhereUniqueInput } from "../../chatMessage/base/ChatMessageWhereUniqueInput";
-import { ValidateNested, IsOptional } from "class-validator";
+import { ValidateNested, IsOptional, IsEnum } from "class-validator";
 import { Type } from "class-transformer";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { EnumChatThreadChatType } from "./EnumChatThreadChatType";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 import { StringFilter } from "../../util/StringFilter";
 import { RateWhereUniqueInput } from "../../rate/base/RateWhereUniqueInput";
-import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class ChatThreadWhereInput {
@@ -36,14 +36,14 @@ class ChatThreadWhereInput {
 
   @ApiProperty({
     required: false,
-    type: StringNullableFilter,
+    enum: EnumChatThreadChatType,
   })
-  @Type(() => StringNullableFilter)
+  @IsEnum(EnumChatThreadChatType)
   @IsOptional()
-  @Field(() => StringNullableFilter, {
+  @Field(() => EnumChatThreadChatType, {
     nullable: true,
   })
-  chatType?: StringNullableFilter;
+  chatType?: "expert" | "AI";
 
   @ApiProperty({
     required: false,
@@ -58,14 +58,15 @@ class ChatThreadWhereInput {
 
   @ApiProperty({
     required: false,
-    type: StringNullableFilter,
+    type: () => UserWhereUniqueInput,
   })
-  @Type(() => StringNullableFilter)
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
   @IsOptional()
-  @Field(() => StringNullableFilter, {
+  @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  expertId?: StringNullableFilter;
+  expertId?: UserWhereUniqueInput;
 
   @ApiProperty({
     required: false,

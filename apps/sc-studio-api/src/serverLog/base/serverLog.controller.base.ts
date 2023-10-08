@@ -51,11 +51,9 @@ export class ServerLogControllerBase {
       data: {
         ...data,
 
-        serverId: data.serverId
-          ? {
-              connect: data.serverId,
-            }
-          : undefined,
+        serverId: {
+          connect: data.serverId,
+        },
       },
       select: {
         createdAt: true,
@@ -166,11 +164,9 @@ export class ServerLogControllerBase {
         data: {
           ...data,
 
-          serverId: data.serverId
-            ? {
-                connect: data.serverId,
-              }
-            : undefined,
+          serverId: {
+            connect: data.serverId,
+          },
         },
         select: {
           createdAt: true,

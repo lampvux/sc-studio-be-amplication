@@ -11,17 +11,36 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
+import {
+  IsString,
+  IsOptional,
+  ValidateNested,
+  IsBoolean,
+  IsDate,
+  IsEnum,
+} from "class-validator";
 import { ChatMessageUpdateManyWithoutUsersInput } from "./ChatMessageUpdateManyWithoutUsersInput";
-import { ValidateNested, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
-import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
+import { ChatThreadUpdateManyWithoutUsersInput } from "./ChatThreadUpdateManyWithoutUsersInput";
 import { IsJSONValue } from "@app/custom-validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
 import { ServerUpdateManyWithoutUsersInput } from "./ServerUpdateManyWithoutUsersInput";
+import { EnumUserStatus } from "./EnumUserStatus";
 
 @InputType()
 class UserUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  billingInformation?: string | null;
+
   @ApiProperty({
     required: false,
     type: () => ChatMessageUpdateManyWithoutUsersInput,
@@ -36,15 +55,71 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: () => ChatThreadWhereUniqueInput,
+    type: () => ChatThreadUpdateManyWithoutUsersInput,
   })
   @ValidateNested()
-  @Type(() => ChatThreadWhereUniqueInput)
+  @Type(() => ChatThreadUpdateManyWithoutUsersInput)
   @IsOptional()
-  @Field(() => ChatThreadWhereUniqueInput, {
+  @Field(() => ChatThreadUpdateManyWithoutUsersInput, {
     nullable: true,
   })
-  chatThreads?: ChatThreadWhereUniqueInput | null;
+  chatThreads?: ChatThreadUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  code_2Fa?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  email?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Boolean,
+  })
+  @IsBoolean()
+  @IsOptional()
+  @Field(() => Boolean, {
+    nullable: true,
+  })
+  enabled_2Fa?: boolean | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => ChatThreadUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => ChatThreadUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => ChatThreadUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  expertChatThread?: ChatThreadUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  expiredAt_2Fa?: Date | null;
 
   @ApiProperty({
     required: false,
@@ -66,7 +141,29 @@ class UserUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
+  googleUid?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
   lastName?: string | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  loggedInAt?: Date | null;
 
   @ApiProperty({
     required: false,
@@ -78,6 +175,17 @@ class UserUpdateInput {
     nullable: true,
   })
   password?: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  publicWalletAddress?: string | null;
 
   @ApiProperty({
     required: false,
@@ -103,6 +211,39 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
+    enum: EnumUserStatus,
+  })
+  @IsEnum(EnumUserStatus)
+  @IsOptional()
+  @Field(() => EnumUserStatus, {
+    nullable: true,
+  })
+  status?: "Option1" | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  tokenExpirationAt?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  type_2Fa?: string | null;
+
+  @ApiProperty({
+    required: false,
     type: String,
   })
   @IsString()
@@ -111,6 +252,28 @@ class UserUpdateInput {
     nullable: true,
   })
   username?: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  userToken?: string | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  verifiedAt?: Date | null;
 }
 
 export { UserUpdateInput as UserUpdateInput };

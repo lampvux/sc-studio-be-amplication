@@ -20,7 +20,7 @@ const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
   createdAt: new Date(),
-  deployedAt: "exampleDeployedAt",
+  deployedAt: new Date(),
   description: "exampleDescription",
   id: "exampleId",
   name: "exampleName",
@@ -28,7 +28,7 @@ const CREATE_INPUT = {
 };
 const CREATE_RESULT = {
   createdAt: new Date(),
-  deployedAt: "exampleDeployedAt",
+  deployedAt: new Date(),
   description: "exampleDescription",
   id: "exampleId",
   name: "exampleName",
@@ -37,7 +37,7 @@ const CREATE_RESULT = {
 const FIND_MANY_RESULT = [
   {
     createdAt: new Date(),
-    deployedAt: "exampleDeployedAt",
+    deployedAt: new Date(),
     description: "exampleDescription",
     id: "exampleId",
     name: "exampleName",
@@ -46,7 +46,7 @@ const FIND_MANY_RESULT = [
 ];
 const FIND_ONE_RESULT = {
   createdAt: new Date(),
-  deployedAt: "exampleDeployedAt",
+  deployedAt: new Date(),
   description: "exampleDescription",
   id: "exampleId",
   name: "exampleName",
@@ -136,6 +136,7 @@ describe("Server", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        deployedAt: CREATE_RESULT.deployedAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -148,6 +149,7 @@ describe("Server", () => {
         {
           ...FIND_MANY_RESULT[0],
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
+          deployedAt: FIND_MANY_RESULT[0].deployedAt.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
         },
       ]);
@@ -171,6 +173,7 @@ describe("Server", () => {
       .expect({
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
+        deployedAt: FIND_ONE_RESULT.deployedAt.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -184,6 +187,7 @@ describe("Server", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        deployedAt: CREATE_RESULT.deployedAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       })
       .then(function () {

@@ -19,42 +19,90 @@ import { UserService } from "../user.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
+  billingInformation: "exampleBillingInformation",
+  code_2Fa: "exampleCode_2Fa",
   createdAt: new Date(),
+  email: "exampleEmail",
+  enabled_2Fa: "true",
+  expiredAt_2Fa: new Date(),
   firstName: "exampleFirstName",
+  googleUid: "exampleGoogleUid",
   id: "exampleId",
   lastName: "exampleLastName",
+  loggedInAt: new Date(),
   password: "examplePassword",
+  publicWalletAddress: "examplePublicWalletAddress",
+  tokenExpirationAt: new Date(),
+  type_2Fa: "exampleType_2Fa",
   updatedAt: new Date(),
   username: "exampleUsername",
+  userToken: "exampleUserToken",
+  verifiedAt: new Date(),
 };
 const CREATE_RESULT = {
+  billingInformation: "exampleBillingInformation",
+  code_2Fa: "exampleCode_2Fa",
   createdAt: new Date(),
+  email: "exampleEmail",
+  enabled_2Fa: "true",
+  expiredAt_2Fa: new Date(),
   firstName: "exampleFirstName",
+  googleUid: "exampleGoogleUid",
   id: "exampleId",
   lastName: "exampleLastName",
+  loggedInAt: new Date(),
   password: "examplePassword",
+  publicWalletAddress: "examplePublicWalletAddress",
+  tokenExpirationAt: new Date(),
+  type_2Fa: "exampleType_2Fa",
   updatedAt: new Date(),
   username: "exampleUsername",
+  userToken: "exampleUserToken",
+  verifiedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
+    billingInformation: "exampleBillingInformation",
+    code_2Fa: "exampleCode_2Fa",
     createdAt: new Date(),
+    email: "exampleEmail",
+    enabled_2Fa: "true",
+    expiredAt_2Fa: new Date(),
     firstName: "exampleFirstName",
+    googleUid: "exampleGoogleUid",
     id: "exampleId",
     lastName: "exampleLastName",
+    loggedInAt: new Date(),
     password: "examplePassword",
+    publicWalletAddress: "examplePublicWalletAddress",
+    tokenExpirationAt: new Date(),
+    type_2Fa: "exampleType_2Fa",
     updatedAt: new Date(),
     username: "exampleUsername",
+    userToken: "exampleUserToken",
+    verifiedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
+  billingInformation: "exampleBillingInformation",
+  code_2Fa: "exampleCode_2Fa",
   createdAt: new Date(),
+  email: "exampleEmail",
+  enabled_2Fa: "true",
+  expiredAt_2Fa: new Date(),
   firstName: "exampleFirstName",
+  googleUid: "exampleGoogleUid",
   id: "exampleId",
   lastName: "exampleLastName",
+  loggedInAt: new Date(),
   password: "examplePassword",
+  publicWalletAddress: "examplePublicWalletAddress",
+  tokenExpirationAt: new Date(),
+  type_2Fa: "exampleType_2Fa",
   updatedAt: new Date(),
   username: "exampleUsername",
+  userToken: "exampleUserToken",
+  verifiedAt: new Date(),
 };
 
 const service = {
@@ -140,7 +188,11 @@ describe("User", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        expiredAt_2Fa: CREATE_RESULT.expiredAt_2Fa.toISOString(),
+        loggedInAt: CREATE_RESULT.loggedInAt.toISOString(),
+        tokenExpirationAt: CREATE_RESULT.tokenExpirationAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
+        verifiedAt: CREATE_RESULT.verifiedAt.toISOString(),
       });
   });
 
@@ -152,7 +204,12 @@ describe("User", () => {
         {
           ...FIND_MANY_RESULT[0],
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
+          expiredAt_2Fa: FIND_MANY_RESULT[0].expiredAt_2Fa.toISOString(),
+          loggedInAt: FIND_MANY_RESULT[0].loggedInAt.toISOString(),
+          tokenExpirationAt:
+            FIND_MANY_RESULT[0].tokenExpirationAt.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
+          verifiedAt: FIND_MANY_RESULT[0].verifiedAt.toISOString(),
         },
       ]);
   });
@@ -175,7 +232,11 @@ describe("User", () => {
       .expect({
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
+        expiredAt_2Fa: FIND_ONE_RESULT.expiredAt_2Fa.toISOString(),
+        loggedInAt: FIND_ONE_RESULT.loggedInAt.toISOString(),
+        tokenExpirationAt: FIND_ONE_RESULT.tokenExpirationAt.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
+        verifiedAt: FIND_ONE_RESULT.verifiedAt.toISOString(),
       });
   });
 
@@ -188,7 +249,11 @@ describe("User", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        expiredAt_2Fa: CREATE_RESULT.expiredAt_2Fa.toISOString(),
+        loggedInAt: CREATE_RESULT.loggedInAt.toISOString(),
+        tokenExpirationAt: CREATE_RESULT.tokenExpirationAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
+        verifiedAt: CREATE_RESULT.verifiedAt.toISOString(),
       })
       .then(function () {
         agent

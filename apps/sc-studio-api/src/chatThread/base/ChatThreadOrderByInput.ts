@@ -72,7 +72,7 @@ class ChatThreadOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  expertId?: SortOrder;
+  expert_chat_thread?: SortOrder;
 
   @ApiProperty({
     required: false,

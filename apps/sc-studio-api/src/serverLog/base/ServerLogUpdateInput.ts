@@ -38,7 +38,7 @@ class ServerLogUpdateInput {
   @Field(() => ServerWhereUniqueInput, {
     nullable: true,
   })
-  serverId?: ServerWhereUniqueInput | null;
+  serverId?: ServerWhereUniqueInput;
 }
 
 export { ServerLogUpdateInput as ServerLogUpdateInput };

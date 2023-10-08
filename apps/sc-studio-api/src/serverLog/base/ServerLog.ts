@@ -45,13 +45,12 @@ class ServerLog {
   log!: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => Server,
   })
   @ValidateNested()
   @Type(() => Server)
-  @IsOptional()
-  serverId?: Server | null;
+  serverId?: Server;
 
   @ApiProperty({
     required: true,

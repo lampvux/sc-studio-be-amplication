@@ -19,36 +19,28 @@ import { ChatThreadService } from "../chatThread.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
-  chatType: "exampleChatType",
   closedAt: new Date(),
   createdAt: new Date(),
-  expertId: "exampleExpertId",
   id: "exampleId",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
-  chatType: "exampleChatType",
   closedAt: new Date(),
   createdAt: new Date(),
-  expertId: "exampleExpertId",
   id: "exampleId",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
-    chatType: "exampleChatType",
     closedAt: new Date(),
     createdAt: new Date(),
-    expertId: "exampleExpertId",
     id: "exampleId",
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
-  chatType: "exampleChatType",
   closedAt: new Date(),
   createdAt: new Date(),
-  expertId: "exampleExpertId",
   id: "exampleId",
   updatedAt: new Date(),
 };

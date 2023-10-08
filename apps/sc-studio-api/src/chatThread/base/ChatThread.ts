@@ -12,10 +12,17 @@ https://docs.amplication.com/how-to/custom-code
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { ChatMessage } from "../../chatMessage/base/ChatMessage";
-import { ValidateNested, IsOptional, IsString, IsDate } from "class-validator";
+import {
+  ValidateNested,
+  IsOptional,
+  IsEnum,
+  IsDate,
+  IsString,
+} from "class-validator";
 import { Type } from "class-transformer";
-import { Rate } from "../../rate/base/Rate";
+import { EnumChatThreadChatType } from "./EnumChatThreadChatType";
 import { User } from "../../user/base/User";
+import { Rate } from "../../rate/base/Rate";
 
 @ObjectType()
 class ChatThread {
@@ -29,15 +36,14 @@ class ChatThread {
   chatMessages?: ChatMessage | null;
 
   @ApiProperty({
-    required: false,
-    type: String,
+    required: true,
+    enum: EnumChatThreadChatType,
   })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
+  @IsEnum(EnumChatThreadChatType)
+  @Field(() => EnumChatThreadChatType, {
     nullable: true,
   })
-  chatType!: string | null;
+  chatType?: "expert" | "AI";
 
   @ApiProperty({
     required: false,
@@ -60,14 +66,12 @@ class ChatThread {
 
   @ApiProperty({
     required: false,
-    type: String,
+    type: () => User,
   })
-  @IsString()
+  @ValidateNested()
+  @Type(() => User)
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  expertId!: string | null;
+  expertId?: User | null;
 
   @ApiProperty({
     required: true,
@@ -95,13 +99,12 @@ class ChatThread {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => User,
   })
   @ValidateNested()
   @Type(() => User)
-  @IsOptional()
-  userId?: User | null;
+  userId?: User;
 }
 
 export { ChatThread as ChatThread };

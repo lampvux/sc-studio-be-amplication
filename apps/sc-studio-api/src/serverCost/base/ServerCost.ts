@@ -63,13 +63,12 @@ class ServerCost {
   id!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => Server,
   })
   @ValidateNested()
   @Type(() => Server)
-  @IsOptional()
-  serverId?: Server | null;
+  serverId?: Server;
 
   @ApiProperty({
     required: false,

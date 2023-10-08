@@ -52,28 +52,22 @@ class ChatMessageCreateInput {
   message?: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => ChatThreadWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => ChatThreadWhereUniqueInput)
-  @IsOptional()
-  @Field(() => ChatThreadWhereUniqueInput, {
-    nullable: true,
-  })
-  thread?: ChatThreadWhereUniqueInput | null;
+  @Field(() => ChatThreadWhereUniqueInput)
+  thread!: ChatThreadWhereUniqueInput;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => UserWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => UserWhereUniqueInput)
-  @IsOptional()
-  @Field(() => UserWhereUniqueInput, {
-    nullable: true,
-  })
-  user?: UserWhereUniqueInput | null;
+  @Field(() => UserWhereUniqueInput)
+  user!: UserWhereUniqueInput;
 }
 
 export { ChatMessageCreateInput as ChatMessageCreateInput };

@@ -59,17 +59,21 @@ export class ChatThreadControllerBase {
             }
           : undefined,
 
+        expertId: data.expertId
+          ? {
+              connect: data.expertId,
+            }
+          : undefined,
+
         rates: data.rates
           ? {
               connect: data.rates,
             }
           : undefined,
 
-        userId: data.userId
-          ? {
-              connect: data.userId,
-            }
-          : undefined,
+        userId: {
+          connect: data.userId,
+        },
       },
       select: {
         chatMessages: {
@@ -81,7 +85,13 @@ export class ChatThreadControllerBase {
         chatType: true,
         closedAt: true,
         createdAt: true,
-        expertId: true,
+
+        expertId: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
 
         rates: {
@@ -127,7 +137,13 @@ export class ChatThreadControllerBase {
         chatType: true,
         closedAt: true,
         createdAt: true,
-        expertId: true,
+
+        expertId: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
 
         rates: {
@@ -174,7 +190,13 @@ export class ChatThreadControllerBase {
         chatType: true,
         closedAt: true,
         createdAt: true,
-        expertId: true,
+
+        expertId: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
 
         rates: {
@@ -228,17 +250,21 @@ export class ChatThreadControllerBase {
               }
             : undefined,
 
+          expertId: data.expertId
+            ? {
+                connect: data.expertId,
+              }
+            : undefined,
+
           rates: data.rates
             ? {
                 connect: data.rates,
               }
             : undefined,
 
-          userId: data.userId
-            ? {
-                connect: data.userId,
-              }
-            : undefined,
+          userId: {
+            connect: data.userId,
+          },
         },
         select: {
           chatMessages: {
@@ -250,7 +276,13 @@ export class ChatThreadControllerBase {
           chatType: true,
           closedAt: true,
           createdAt: true,
-          expertId: true,
+
+          expertId: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
 
           rates: {
@@ -305,7 +337,13 @@ export class ChatThreadControllerBase {
           chatType: true,
           closedAt: true,
           createdAt: true,
-          expertId: true,
+
+          expertId: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
 
           rates: {

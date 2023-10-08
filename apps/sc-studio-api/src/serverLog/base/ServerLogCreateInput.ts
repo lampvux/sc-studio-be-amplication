@@ -29,16 +29,13 @@ class ServerLogCreateInput {
   log?: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => ServerWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => ServerWhereUniqueInput)
-  @IsOptional()
-  @Field(() => ServerWhereUniqueInput, {
-    nullable: true,
-  })
-  serverId?: ServerWhereUniqueInput | null;
+  @Field(() => ServerWhereUniqueInput)
+  serverId!: ServerWhereUniqueInput;
 }
 
 export { ServerLogCreateInput as ServerLogCreateInput };

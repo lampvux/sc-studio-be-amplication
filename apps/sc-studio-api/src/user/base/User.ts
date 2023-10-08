@@ -11,17 +11,36 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
+import {
+  IsString,
+  IsOptional,
+  ValidateNested,
+  IsDate,
+  IsBoolean,
+  IsEnum,
+} from "class-validator";
 import { ChatMessage } from "../../chatMessage/base/ChatMessage";
-import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { ChatThread } from "../../chatThread/base/ChatThread";
 import { IsJSONValue } from "@app/custom-validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
 import { Server } from "../../server/base/Server";
+import { EnumUserStatus } from "./EnumUserStatus";
 
 @ObjectType()
 class User {
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  billingInformation!: string | null;
+
   @ApiProperty({
     required: false,
     type: () => [ChatMessage],
@@ -33,12 +52,23 @@ class User {
 
   @ApiProperty({
     required: false,
-    type: () => ChatThread,
+    type: () => [ChatThread],
   })
   @ValidateNested()
   @Type(() => ChatThread)
   @IsOptional()
-  chatThreads?: ChatThread | null;
+  chatThreads?: Array<ChatThread>;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  code_2Fa!: string | null;
 
   @ApiProperty({
     required: true,
@@ -57,7 +87,60 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
+  email!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Boolean,
+  })
+  @IsBoolean()
+  @IsOptional()
+  @Field(() => Boolean, {
+    nullable: true,
+  })
+  enabled_2Fa!: boolean | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [ChatThread],
+  })
+  @ValidateNested()
+  @Type(() => ChatThread)
+  @IsOptional()
+  expertChatThread?: Array<ChatThread>;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  expiredAt_2Fa!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
   firstName!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  googleUid!: string | null;
 
   @ApiProperty({
     required: true,
@@ -79,6 +162,28 @@ class User {
   lastName!: string | null;
 
   @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  loggedInAt!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  publicWalletAddress!: string | null;
+
+  @ApiProperty({
     required: true,
   })
   @IsJSONValue()
@@ -95,6 +200,39 @@ class User {
   servers?: Array<Server>;
 
   @ApiProperty({
+    required: false,
+    enum: EnumUserStatus,
+  })
+  @IsEnum(EnumUserStatus)
+  @IsOptional()
+  @Field(() => EnumUserStatus, {
+    nullable: true,
+  })
+  status?: "Option1" | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  tokenExpirationAt!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  type_2Fa!: string | null;
+
+  @ApiProperty({
     required: true,
   })
   @IsDate()
@@ -109,6 +247,28 @@ class User {
   @IsString()
   @Field(() => String)
   username!: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  userToken!: string | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  verifiedAt!: Date | null;
 }
 
 export { User as User };

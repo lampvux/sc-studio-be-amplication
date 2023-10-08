@@ -68,13 +68,12 @@ class ChatMessage {
   message!: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => ChatThread,
   })
   @ValidateNested()
   @Type(() => ChatThread)
-  @IsOptional()
-  thread?: ChatThread | null;
+  thread?: ChatThread;
 
   @ApiProperty({
     required: true,
@@ -85,13 +84,12 @@ class ChatMessage {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => User,
   })
   @ValidateNested()
   @Type(() => User)
-  @IsOptional()
-  user?: User | null;
+  user?: User;
 }
 
 export { ChatMessage as ChatMessage };

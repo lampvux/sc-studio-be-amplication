@@ -13,8 +13,8 @@ import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import {
   IsDate,
-  IsString,
   IsOptional,
+  IsString,
   ValidateNested,
   IsEnum,
 } from "class-validator";
@@ -36,14 +36,14 @@ class Server {
 
   @ApiProperty({
     required: false,
-    type: String,
   })
-  @IsString()
+  @IsDate()
+  @Type(() => Date)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => Date, {
     nullable: true,
   })
-  deployedAt!: string | null;
+  deployedAt!: Date | null;
 
   @ApiProperty({
     required: false,
@@ -65,15 +65,12 @@ class Server {
   id!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  name!: string | null;
+  @Field(() => String)
+  name!: string;
 
   @ApiProperty({
     required: false,
@@ -94,15 +91,14 @@ class Server {
   serverLogs?: Array<ServerLog>;
 
   @ApiProperty({
-    required: false,
+    required: true,
     enum: EnumServerStatus,
   })
   @IsEnum(EnumServerStatus)
-  @IsOptional()
   @Field(() => EnumServerStatus, {
     nullable: true,
   })
-  status?: "Option1" | null;
+  status?: "WorkInProgress" | "Deployed" | "Running" | "Stopped";
 
   @ApiProperty({
     required: true,

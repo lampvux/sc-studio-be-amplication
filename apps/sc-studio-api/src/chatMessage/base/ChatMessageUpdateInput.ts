@@ -61,7 +61,7 @@ class ChatMessageUpdateInput {
   @Field(() => ChatThreadWhereUniqueInput, {
     nullable: true,
   })
-  thread?: ChatThreadWhereUniqueInput | null;
+  thread?: ChatThreadWhereUniqueInput;
 
   @ApiProperty({
     required: false,
@@ -73,7 +73,7 @@ class ChatMessageUpdateInput {
   @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  user?: UserWhereUniqueInput | null;
+  user?: UserWhereUniqueInput;
 }
 
 export { ChatMessageUpdateInput as ChatMessageUpdateInput };

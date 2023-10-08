@@ -12,10 +12,11 @@ https://docs.amplication.com/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { ChatMessageWhereUniqueInput } from "../../chatMessage/base/ChatMessageWhereUniqueInput";
-import { ValidateNested, IsOptional, IsString, IsDate } from "class-validator";
+import { ValidateNested, IsOptional, IsEnum, IsDate } from "class-validator";
 import { Type } from "class-transformer";
-import { RateWhereUniqueInput } from "../../rate/base/RateWhereUniqueInput";
+import { EnumChatThreadChatType } from "./EnumChatThreadChatType";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { RateWhereUniqueInput } from "../../rate/base/RateWhereUniqueInput";
 
 @InputType()
 class ChatThreadCreateInput {
@@ -32,15 +33,12 @@ class ChatThreadCreateInput {
   chatMessages?: ChatMessageWhereUniqueInput | null;
 
   @ApiProperty({
-    required: false,
-    type: String,
+    required: true,
+    enum: EnumChatThreadChatType,
   })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  chatType?: string | null;
+  @IsEnum(EnumChatThreadChatType)
+  @Field(() => EnumChatThreadChatType)
+  chatType!: "expert" | "AI";
 
   @ApiProperty({
     required: false,
@@ -55,14 +53,15 @@ class ChatThreadCreateInput {
 
   @ApiProperty({
     required: false,
-    type: String,
+    type: () => UserWhereUniqueInput,
   })
-  @IsString()
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  expertId?: string | null;
+  expertId?: UserWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,
@@ -77,16 +76,13 @@ class ChatThreadCreateInput {
   rates?: RateWhereUniqueInput | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => UserWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => UserWhereUniqueInput)
-  @IsOptional()
-  @Field(() => UserWhereUniqueInput, {
-    nullable: true,
-  })
-  userId?: UserWhereUniqueInput | null;
+  @Field(() => UserWhereUniqueInput)
+  userId!: UserWhereUniqueInput;
 }
 
 export { ChatThreadCreateInput as ChatThreadCreateInput };

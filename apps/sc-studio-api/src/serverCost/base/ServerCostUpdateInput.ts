@@ -56,7 +56,7 @@ class ServerCostUpdateInput {
   @Field(() => ServerWhereUniqueInput, {
     nullable: true,
   })
-  serverId?: ServerWhereUniqueInput | null;
+  serverId?: ServerWhereUniqueInput;
 
   @ApiProperty({
     required: false,
