@@ -10,7 +10,7 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, User, Server } from "@prisma/client";
+import { Prisma, User, ChatMessage, Server, ChatThread } from "@prisma/client";
 import { PasswordService } from "../../auth/password.service";
 import { transformStringFieldUpdateInput } from "../../prisma.util";
 
@@ -72,6 +72,17 @@ export class UserServiceBase {
     return this.prisma.user.delete(args);
   }
 
+  async findChatMessages(
+    parentId: string,
+    args: Prisma.ChatMessageFindManyArgs
+  ): Promise<ChatMessage[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .chatMessages(args);
+  }
+
   async findServers(
     parentId: string,
     args: Prisma.ServerFindManyArgs
@@ -81,5 +92,13 @@ export class UserServiceBase {
         where: { id: parentId },
       })
       .servers(args);
+  }
+
+  async getChatThreads(parentId: string): Promise<ChatThread | null> {
+    return this.prisma.user
+      .findUnique({
+        where: { id: parentId },
+      })
+      .chatThreads();
   }
 }

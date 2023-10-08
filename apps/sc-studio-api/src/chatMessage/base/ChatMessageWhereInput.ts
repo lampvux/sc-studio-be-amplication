@@ -11,39 +11,25 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ChatMessageListRelationFilter } from "../../chatMessage/base/ChatMessageListRelationFilter";
-import { ValidateNested, IsOptional } from "class-validator";
-import { Type } from "class-transformer";
-import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { Type } from "class-transformer";
+import { IsOptional, ValidateNested } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
-import { ServerListRelationFilter } from "../../server/base/ServerListRelationFilter";
+import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
-class UserWhereInput {
+class ChatMessageWhereInput {
   @ApiProperty({
     required: false,
-    type: () => ChatMessageListRelationFilter,
+    type: StringNullableFilter,
   })
-  @ValidateNested()
-  @Type(() => ChatMessageListRelationFilter)
+  @Type(() => StringNullableFilter)
   @IsOptional()
-  @Field(() => ChatMessageListRelationFilter, {
+  @Field(() => StringNullableFilter, {
     nullable: true,
   })
-  chatMessages?: ChatMessageListRelationFilter;
-
-  @ApiProperty({
-    required: false,
-    type: () => ChatThreadWhereUniqueInput,
-  })
-  @ValidateNested()
-  @Type(() => ChatThreadWhereUniqueInput)
-  @IsOptional()
-  @Field(() => ChatThreadWhereUniqueInput, {
-    nullable: true,
-  })
-  chatThreads?: ChatThreadWhereUniqueInput;
+  fileTitle?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -54,7 +40,7 @@ class UserWhereInput {
   @Field(() => StringNullableFilter, {
     nullable: true,
   })
-  firstName?: StringNullableFilter;
+  fileUrl?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -76,30 +62,31 @@ class UserWhereInput {
   @Field(() => StringNullableFilter, {
     nullable: true,
   })
-  lastName?: StringNullableFilter;
+  message?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
-    type: () => ServerListRelationFilter,
+    type: () => ChatThreadWhereUniqueInput,
   })
   @ValidateNested()
-  @Type(() => ServerListRelationFilter)
+  @Type(() => ChatThreadWhereUniqueInput)
   @IsOptional()
-  @Field(() => ServerListRelationFilter, {
+  @Field(() => ChatThreadWhereUniqueInput, {
     nullable: true,
   })
-  servers?: ServerListRelationFilter;
+  thread?: ChatThreadWhereUniqueInput;
 
   @ApiProperty({
     required: false,
-    type: StringFilter,
+    type: () => UserWhereUniqueInput,
   })
-  @Type(() => StringFilter)
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
   @IsOptional()
-  @Field(() => StringFilter, {
+  @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  username?: StringFilter;
+  user?: UserWhereUniqueInput;
 }
 
-export { UserWhereInput as UserWhereInput };
+export { ChatMessageWhereInput as ChatMessageWhereInput };

@@ -11,28 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ChatMessageListRelationFilter } from "../../chatMessage/base/ChatMessageListRelationFilter";
+import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
 import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
-import { ServerListRelationFilter } from "../../server/base/ServerListRelationFilter";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { DecimalFilter } from "../../util/DecimalFilter";
 
 @InputType()
-class UserWhereInput {
-  @ApiProperty({
-    required: false,
-    type: () => ChatMessageListRelationFilter,
-  })
-  @ValidateNested()
-  @Type(() => ChatMessageListRelationFilter)
-  @IsOptional()
-  @Field(() => ChatMessageListRelationFilter, {
-    nullable: true,
-  })
-  chatMessages?: ChatMessageListRelationFilter;
-
+class RateWhereInput {
   @ApiProperty({
     required: false,
     type: () => ChatThreadWhereUniqueInput,
@@ -44,17 +31,6 @@ class UserWhereInput {
     nullable: true,
   })
   chatThreads?: ChatThreadWhereUniqueInput;
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  firstName?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -76,30 +52,18 @@ class UserWhereInput {
   @Field(() => StringNullableFilter, {
     nullable: true,
   })
-  lastName?: StringNullableFilter;
+  log?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
-    type: () => ServerListRelationFilter,
+    type: DecimalFilter,
   })
-  @ValidateNested()
-  @Type(() => ServerListRelationFilter)
+  @Type(() => DecimalFilter)
   @IsOptional()
-  @Field(() => ServerListRelationFilter, {
+  @Field(() => DecimalFilter, {
     nullable: true,
   })
-  servers?: ServerListRelationFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringFilter,
-  })
-  @Type(() => StringFilter)
-  @IsOptional()
-  @Field(() => StringFilter, {
-    nullable: true,
-  })
-  username?: StringFilter;
+  rating?: DecimalFilter;
 }
 
-export { UserWhereInput as UserWhereInput };
+export { RateWhereInput as RateWhereInput };

@@ -18,18 +18,7 @@ import { SortOrder } from "../../util/SortOrder";
   isAbstract: true,
   description: undefined,
 })
-class UserOrderByInput {
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  chatThreadsId?: SortOrder;
-
+class ChatMessageOrderByInput {
   @ApiProperty({
     required: false,
     enum: ["asc", "desc"],
@@ -50,7 +39,18 @@ class UserOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  firstName?: SortOrder;
+  fileTitle?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
+  fileUrl?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -72,7 +72,7 @@ class UserOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  lastName?: SortOrder;
+  message?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -83,18 +83,7 @@ class UserOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  password?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  roles?: SortOrder;
+  chat?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -116,7 +105,7 @@ class UserOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  username?: SortOrder;
+  userId?: SortOrder;
 }
 
-export { UserOrderByInput as UserOrderByInput };
+export { ChatMessageOrderByInput as ChatMessageOrderByInput };

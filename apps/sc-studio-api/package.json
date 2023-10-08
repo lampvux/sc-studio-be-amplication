@@ -1,5 +1,5 @@
 {
-  "name": "@sc-studio-api-1/server",
+  "name": "@sc-studio-api/server",
   "private": true,
   "scripts": {
     "start": "nest start",

@@ -27,6 +27,9 @@ import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserUpdateInput } from "./UserUpdateInput";
 import { User } from "./User";
+import { ChatMessageFindManyArgs } from "../../chatMessage/base/ChatMessageFindManyArgs";
+import { ChatMessage } from "../../chatMessage/base/ChatMessage";
+import { ChatMessageWhereUniqueInput } from "../../chatMessage/base/ChatMessageWhereUniqueInput";
 import { ServerFindManyArgs } from "../../server/base/ServerFindManyArgs";
 import { Server } from "../../server/base/Server";
 import { ServerWhereUniqueInput } from "../../server/base/ServerWhereUniqueInput";
@@ -51,8 +54,22 @@ export class UserControllerBase {
   })
   async create(@common.Body() data: UserCreateInput): Promise<User> {
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        chatThreads: data.chatThreads
+          ? {
+              connect: data.chatThreads,
+            }
+          : undefined,
+      },
       select: {
+        chatThreads: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
         firstName: true,
         id: true,
@@ -81,6 +98,12 @@ export class UserControllerBase {
     return this.service.findMany({
       ...args,
       select: {
+        chatThreads: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
         firstName: true,
         id: true,
@@ -110,6 +133,12 @@ export class UserControllerBase {
     const result = await this.service.findOne({
       where: params,
       select: {
+        chatThreads: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
         firstName: true,
         id: true,
@@ -146,8 +175,22 @@ export class UserControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          chatThreads: data.chatThreads
+            ? {
+                connect: data.chatThreads,
+              }
+            : undefined,
+        },
         select: {
+          chatThreads: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
           firstName: true,
           id: true,
@@ -185,6 +228,12 @@ export class UserControllerBase {
       return await this.service.delete({
         where: params,
         select: {
+          chatThreads: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
           firstName: true,
           id: true,
@@ -202,6 +251,117 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/chatMessages")
+  @ApiNestedQuery(ChatMessageFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "ChatMessage",
+    action: "read",
+    possession: "any",
+  })
+  async findManyChatMessages(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<ChatMessage[]> {
+    const query = plainToClass(ChatMessageFindManyArgs, request.query);
+    const results = await this.service.findChatMessages(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        fileTitle: true,
+        fileUrl: true,
+        id: true,
+        message: true,
+
+        thread: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/chatMessages")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectChatMessages(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatMessageWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      chatMessages: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/chatMessages")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateChatMessages(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatMessageWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      chatMessages: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/chatMessages")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectChatMessages(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: ChatMessageWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      chatMessages: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)

@@ -435,6 +435,12 @@ export class ServerControllerBase {
     const results = await this.service.findUserId(params.id, {
       ...query,
       select: {
+        chatThreads: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
         firstName: true,
         id: true,

@@ -11,15 +11,41 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, ValidateNested } from "class-validator";
+import { ChatMessageUpdateManyWithoutUsersInput } from "./ChatMessageUpdateManyWithoutUsersInput";
+import { ValidateNested, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { ChatThreadWhereUniqueInput } from "../../chatThread/base/ChatThreadWhereUniqueInput";
 import { IsJSONValue } from "@app/custom-validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
 import { ServerUpdateManyWithoutUsersInput } from "./ServerUpdateManyWithoutUsersInput";
-import { Type } from "class-transformer";
 
 @InputType()
 class UserUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: () => ChatMessageUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => ChatMessageUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => ChatMessageUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  chatMessages?: ChatMessageUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => ChatThreadWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ChatThreadWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ChatThreadWhereUniqueInput, {
+    nullable: true,
+  })
+  chatThreads?: ChatThreadWhereUniqueInput | null;
+
   @ApiProperty({
     required: false,
     type: String,

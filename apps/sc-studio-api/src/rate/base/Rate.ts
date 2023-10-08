@@ -9,28 +9,21 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-import { ObjectType, Field } from "@nestjs/graphql";
+import { ObjectType, Field, Float } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ChatMessage } from "../../chatMessage/base/ChatMessage";
-import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
-import { Type } from "class-transformer";
 import { ChatThread } from "../../chatThread/base/ChatThread";
-import { IsJSONValue } from "@app/custom-validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { JsonValue } from "type-fest";
-import { Server } from "../../server/base/Server";
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsString,
+  IsNumber,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { Decimal } from "decimal.js";
 
 @ObjectType()
-class User {
-  @ApiProperty({
-    required: false,
-    type: () => [ChatMessage],
-  })
-  @ValidateNested()
-  @Type(() => ChatMessage)
-  @IsOptional()
-  chatMessages?: Array<ChatMessage>;
-
+class Rate {
   @ApiProperty({
     required: false,
     type: () => ChatThread,
@@ -49,17 +42,6 @@ class User {
   createdAt!: Date;
 
   @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  firstName!: string | null;
-
-  @ApiProperty({
     required: true,
     type: String,
   })
@@ -76,23 +58,15 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
-  lastName!: string | null;
+  log!: string | null;
 
   @ApiProperty({
     required: true,
+    type: Number,
   })
-  @IsJSONValue()
-  @Field(() => GraphQLJSON)
-  roles!: JsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => [Server],
-  })
-  @ValidateNested()
-  @Type(() => Server)
-  @IsOptional()
-  servers?: Array<Server>;
+  @IsNumber()
+  @Field(() => Float)
+  rating!: Decimal;
 
   @ApiProperty({
     required: true,
@@ -101,14 +75,6 @@ class User {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
-
-  @ApiProperty({
-    required: true,
-    type: String,
-  })
-  @IsString()
-  @Field(() => String)
-  username!: string;
 }
 
-export { User as User };
+export { Rate as Rate };

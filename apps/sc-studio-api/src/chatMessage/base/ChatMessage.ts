@@ -11,35 +11,13 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ChatMessage } from "../../chatMessage/base/ChatMessage";
-import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
+import { IsDate, IsString, IsOptional, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { ChatThread } from "../../chatThread/base/ChatThread";
-import { IsJSONValue } from "@app/custom-validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { JsonValue } from "type-fest";
-import { Server } from "../../server/base/Server";
+import { User } from "../../user/base/User";
 
 @ObjectType()
-class User {
-  @ApiProperty({
-    required: false,
-    type: () => [ChatMessage],
-  })
-  @ValidateNested()
-  @Type(() => ChatMessage)
-  @IsOptional()
-  chatMessages?: Array<ChatMessage>;
-
-  @ApiProperty({
-    required: false,
-    type: () => ChatThread,
-  })
-  @ValidateNested()
-  @Type(() => ChatThread)
-  @IsOptional()
-  chatThreads?: ChatThread | null;
-
+class ChatMessage {
   @ApiProperty({
     required: true,
   })
@@ -57,7 +35,18 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
-  firstName!: string | null;
+  fileTitle!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  fileUrl!: string | null;
 
   @ApiProperty({
     required: true,
@@ -76,23 +65,16 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
-  lastName!: string | null;
-
-  @ApiProperty({
-    required: true,
-  })
-  @IsJSONValue()
-  @Field(() => GraphQLJSON)
-  roles!: JsonValue;
+  message!: string | null;
 
   @ApiProperty({
     required: false,
-    type: () => [Server],
+    type: () => ChatThread,
   })
   @ValidateNested()
-  @Type(() => Server)
+  @Type(() => ChatThread)
   @IsOptional()
-  servers?: Array<Server>;
+  thread?: ChatThread | null;
 
   @ApiProperty({
     required: true,
@@ -103,12 +85,13 @@ class User {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: true,
-    type: String,
+    required: false,
+    type: () => User,
   })
-  @IsString()
-  @Field(() => String)
-  username!: string;
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  user?: User | null;
 }
 
-export { User as User };
+export { ChatMessage as ChatMessage };

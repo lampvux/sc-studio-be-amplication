@@ -12,33 +12,43 @@ https://docs.amplication.com/how-to/custom-code
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { ChatMessage } from "../../chatMessage/base/ChatMessage";
-import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
+import { ValidateNested, IsOptional, IsString, IsDate } from "class-validator";
 import { Type } from "class-transformer";
-import { ChatThread } from "../../chatThread/base/ChatThread";
-import { IsJSONValue } from "@app/custom-validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { JsonValue } from "type-fest";
-import { Server } from "../../server/base/Server";
+import { Rate } from "../../rate/base/Rate";
+import { User } from "../../user/base/User";
 
 @ObjectType()
-class User {
+class ChatThread {
   @ApiProperty({
     required: false,
-    type: () => [ChatMessage],
+    type: () => ChatMessage,
   })
   @ValidateNested()
   @Type(() => ChatMessage)
   @IsOptional()
-  chatMessages?: Array<ChatMessage>;
+  chatMessages?: ChatMessage | null;
 
   @ApiProperty({
     required: false,
-    type: () => ChatThread,
+    type: String,
   })
-  @ValidateNested()
-  @Type(() => ChatThread)
+  @IsString()
   @IsOptional()
-  chatThreads?: ChatThread | null;
+  @Field(() => String, {
+    nullable: true,
+  })
+  chatType!: string | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  closedAt!: Date | null;
 
   @ApiProperty({
     required: true,
@@ -57,7 +67,7 @@ class User {
   @Field(() => String, {
     nullable: true,
   })
-  firstName!: string | null;
+  expertId!: string | null;
 
   @ApiProperty({
     required: true,
@@ -69,30 +79,12 @@ class User {
 
   @ApiProperty({
     required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  lastName!: string | null;
-
-  @ApiProperty({
-    required: true,
-  })
-  @IsJSONValue()
-  @Field(() => GraphQLJSON)
-  roles!: JsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => [Server],
+    type: () => Rate,
   })
   @ValidateNested()
-  @Type(() => Server)
+  @Type(() => Rate)
   @IsOptional()
-  servers?: Array<Server>;
+  rates?: Rate | null;
 
   @ApiProperty({
     required: true,
@@ -103,12 +95,13 @@ class User {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: true,
-    type: String,
+    required: false,
+    type: () => User,
   })
-  @IsString()
-  @Field(() => String)
-  username!: string;
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  userId?: User | null;
 }
 
-export { User as User };
+export { ChatThread as ChatThread };
